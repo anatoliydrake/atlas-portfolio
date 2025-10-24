@@ -17,8 +17,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
-  server:
-    port: ${SERVER_PORT:8081}
+server:
+  port: ${SERVER_PORT:8081}
 
-  jwt:
-    secret: ${JWT_SECRET:CHANGE_THIS_SECRET_KEY_IN_PRODUCTION_MIN_32_CHARS}
+jwt:
+  secret: ${JWT_SECRET:CHANGE_THIS_SECRET_KEY_IN_PRODUCTION_MIN_32_CHARS}
