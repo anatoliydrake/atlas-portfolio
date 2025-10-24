@@ -1,3 +1,24 @@
 spring:
   application:
     name: atlas-portfolio
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/atlas_portfolio}
+    username: ${DATABASE_USERNAME:atlas_user}
+    password: ${DATABASE_PASSWORD:atlas_password_dev_123}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  server:
+    port: ${SERVER_PORT:8081}
+
+  jwt:
+    secret: ${JWT_SECRET:CHANGE_THIS_SECRET_KEY_IN_PRODUCTION_MIN_32_CHARS}
