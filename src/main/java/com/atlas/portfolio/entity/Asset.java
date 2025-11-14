@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,11 +36,19 @@ public class Asset {
     @Column(nullable = false, precision = 20, scale = 2, name = "average_purchase_price")
     private BigDecimal averagePurchasePrice;
 
+    @Column(precision = 20, scale = 2, name = "current_price")
+    private BigDecimal currentPrice;
+
+    @Column(nullable = false, length = 3)
+    private String currency;
+
+    @Column(name = "price_updated_at")
+    private LocalDateTime priceUpdatedAt;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

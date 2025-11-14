@@ -33,6 +33,7 @@ public class AssetService {
         asset.setAssetType(request.getAssetType());
         asset.setQuantity(request.getQuantity());
         asset.setAveragePurchasePrice(request.getAveragePurchasePrice());
+        asset.setCurrency(request.getCurrency().toUpperCase());
 
         Asset savedAsset = assetRepository.save(asset);
         return new AssetResponse(savedAsset);

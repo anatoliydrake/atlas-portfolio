@@ -19,6 +19,9 @@ public class AssetResponse {
     private AssetType assetType;
     private BigDecimal quantity;
     private BigDecimal averagePurchasePrice;
+    private BigDecimal currentPrice;
+    private String currency;
+    private LocalDateTime priceUpdatedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -28,6 +31,9 @@ public class AssetResponse {
         this.assetType = asset.getAssetType();
         this.quantity = asset.getQuantity();
         this.averagePurchasePrice = asset.getAveragePurchasePrice();
+        this.currentPrice = asset.getCurrentPrice();
+        this.currency = asset.getCurrency();
+        this.priceUpdatedAt = asset.getPriceUpdatedAt();
         this.createdAt = asset.getCreatedAt();
         this.updatedAt = asset.getUpdatedAt();
     }

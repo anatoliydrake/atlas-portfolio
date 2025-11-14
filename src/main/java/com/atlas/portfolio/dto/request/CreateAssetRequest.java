@@ -27,4 +27,9 @@ public class CreateAssetRequest {
     @NotNull(message = "Average purchase price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private BigDecimal averagePurchasePrice;
+
+    @NotBlank(message = "Currency is required")
+    @Size(min = 3, max = 3, message = "Currency must be a 3-character ISO code (e.g., USD, EUR)")
+    @Pattern(regexp = "^[A-Z]{3}$", message = "Currency must be uppercase 3-letter code")
+    private String currency;
 }
