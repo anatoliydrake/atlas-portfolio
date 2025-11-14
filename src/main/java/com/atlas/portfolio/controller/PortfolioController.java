@@ -57,4 +57,11 @@ public class PortfolioController {
         portfolioService.deletePortfolio(id, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/refresh-prices")
+    public ResponseEntity<Void> refreshPortfolioPrices(@PathVariable Long id) {
+        Long userId = SecurityUtil.getCurrentUserId();
+        portfolioService.refreshPortfolioPrices(id, userId);
+        return ResponseEntity.ok().build();
+    }
 }
