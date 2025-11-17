@@ -1,0 +1,97 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-portfolios-table
+      author: atlas-portfolio
+      changes:
+        - createTable:
+            tableName: portfolios
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(500)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+
+  - changeSet:
+      id: 001-create-assets-table
+      author: atlas-portfolio
+      changes:
+        - createTable:
+            tableName: assets
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: portfolio_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_assets_portfolio
+                    references: portfolios(id)
+              - column:
+                  name: symbol
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: asset_type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: decimal(20,8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: average_purchase_price
+                  type: decimal(20,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: current_price
+                  type: decimal(20,2)
+              - column:
+                  name: currency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price_updated_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
