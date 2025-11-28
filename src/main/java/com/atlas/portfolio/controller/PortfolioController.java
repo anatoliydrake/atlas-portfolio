@@ -3,6 +3,7 @@ package com.atlas.portfolio.controller;
 import com.atlas.portfolio.dto.request.CreatePortfolioRequest;
 import com.atlas.portfolio.dto.request.UpdatePortfolioRequest;
 import com.atlas.portfolio.dto.response.PortfolioResponse;
+import com.atlas.portfolio.dto.response.PortfolioSummaryResponse;
 import com.atlas.portfolio.service.PortfolioService;
 import com.atlas.portfolio.util.SecurityUtil;
 import jakarta.validation.Valid;
@@ -40,6 +41,13 @@ public class PortfolioController {
         Long userId = SecurityUtil.getCurrentUserId();
         PortfolioResponse portfolio = portfolioService.getPortfolioById(id, userId);
         return ResponseEntity.ok(portfolio);
+    }
+
+    @GetMapping("/{id}/summary")
+    public ResponseEntity<PortfolioSummaryResponse> getPortfolioSummary(@PathVariable Long id) {
+        Long userId = SecurityUtil.getCurrentUserId();
+        PortfolioSummaryResponse summary = portfolioService.getPortfolioSummary(id, userId);
+        return ResponseEntity.ok(summary);
     }
 
     @PutMapping("/{id}")

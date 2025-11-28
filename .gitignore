@@ -54,3 +54,6 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# SQL
+*.sql
