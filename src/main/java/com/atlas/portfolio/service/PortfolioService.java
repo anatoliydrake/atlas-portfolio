@@ -9,7 +9,6 @@ import com.atlas.portfolio.entity.Portfolio;
 import com.atlas.portfolio.exception.ResourceNotFoundException;
 import com.atlas.portfolio.repository.AssetRepository;
 import com.atlas.portfolio.repository.PortfolioRepository;
-import com.atlas.portfolio.service.external.FinnhubService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,7 +30,8 @@ public class PortfolioService {
 
     private final PortfolioRepository portfolioRepository;
     private final AssetRepository assetRepository;
-    private final FinnhubService finnhubService;
+    private final StockPriceService stockPriceService;
+    private final ExchangeRateService exchangeRateService;
     private final JdbcTemplate jdbcTemplate;
     private final Executor priceRefreshExecutor;
 
@@ -216,8 +216,7 @@ public class PortfolioService {
 
     private CompletableFuture<Void> refreshAssetPrice(Asset asset, List<Object[]> batchArgs) {
         return switch (asset.getAssetType()) {
-            case STOCK, ETF -> fetchPrice(asset, asset.getSymbol(), batchArgs);
-            case CRYPTO -> fetchPrice(asset, "BINANCE:" + asset.getSymbol() + "USDT", batchArgs);
+            case STOCK -> fetchPrice(asset, batchArgs);
             case CASH -> updateCashPrice(asset, batchArgs);
             default -> {
                 log.warn("Price refresh not supported for asset type: {} ({})",
@@ -227,10 +226,10 @@ public class PortfolioService {
         };
     }
 
-    private CompletableFuture<Void> fetchPrice(Asset asset, String symbol, List<Object[]> batchArgs) {
+    private CompletableFuture<Void> fetchPrice(Asset asset, List<Object[]> batchArgs) {
         return CompletableFuture.runAsync(() -> {
             try {
-                BigDecimal price = finnhubService.fetchStockPriceSync(symbol);
+                BigDecimal price = stockPriceService.fetchStockPrice(asset.getSymbol());
                 batchArgs.add(new Object[]{price, asset.getId()});
                 log.info("Fetched price for {} ({}): {}",
                         asset.getSymbol(), asset.getAssetType(), price);
@@ -243,8 +242,18 @@ public class PortfolioService {
     }
 
     private CompletableFuture<Void> updateCashPrice(Asset asset, List<Object[]> batchArgs) {
-        batchArgs.add(new Object[]{BigDecimal.ONE, asset.getId()});
-        log.info("Updated price for {} (CASH): 1.0", asset.getSymbol());
-        return CompletableFuture.completedFuture(null);
+        return CompletableFuture.runAsync(() -> {
+            try {
+                BigDecimal rate = exchangeRateService.getRate(
+                        asset.getCurrency(),
+                        "USD");
+                batchArgs.add(new Object[]{rate, asset.getId()});
+                log.info("Updated rate for {} (CASH): {}", asset.getSymbol(), rate);
+            } catch (Exception e) {
+                log.error("Failed to fetch price for {} ({}) after all retries: {}",
+                        asset.getSymbol(), asset.getAssetType(), e.getMessage());
+                throw e;
+            }
+        }, priceRefreshExecutor);
     }
 }
