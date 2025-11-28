@@ -31,7 +31,7 @@ public class PortfolioSummaryResponse {
         private BigDecimal totalInvested;
         private BigDecimal profitLoss;
         private BigDecimal profitLossPercent;
-        private BigDecimal portfolioPercentage;  // % of total portfolio value
+        private BigDecimal portfolioPercentage;
         private Integer count;
     }
 }

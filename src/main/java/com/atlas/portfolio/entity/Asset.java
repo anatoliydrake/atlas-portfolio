@@ -33,10 +33,10 @@ public class Asset {
     @Column(nullable = false, precision = 20, scale = 8)
     private BigDecimal quantity;
 
-    @Column(nullable = false, precision = 20, scale = 2, name = "average_purchase_price")
+    @Column(nullable = false, precision = 20, scale = 8, name = "average_purchase_price")
     private BigDecimal averagePurchasePrice;
 
-    @Column(precision = 20, scale = 2, name = "current_price")
+    @Column(precision = 20, scale = 8, name = "current_price")
     private BigDecimal currentPrice;
 
     @Column(nullable = false, length = 3)

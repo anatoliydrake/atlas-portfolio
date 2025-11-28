@@ -73,12 +73,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: average_purchase_price
-                  type: decimal(20,2)
+                  type: decimal(20,8)
                   constraints:
                     nullable: false
               - column:
                   name: current_price
-                  type: decimal(20,2)
+                  type: decimal(20,8)
               - column:
                   name: currency
                   type: varchar(3)
