@@ -1,11 +1,13 @@
-package com.atlas.portfolio.util;
+package com.atlas.portfolio.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
-public class SecurityUtil {
+@Service
+public class SecurityService {
 
-    public static Long getCurrentUserId() {
+    public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof Long) {

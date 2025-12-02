@@ -14,8 +14,11 @@ import java.util.concurrent.Executors;
 @EnableScheduling
 @EnableCaching
 public class AsyncConfig {
+
+    private static final int PRICE_REFRESH_THREAD_POOL_SIZE = 10;
+
     @Bean(name = "priceRefreshExecutor", destroyMethod = "shutdown")
     public Executor priceRefreshExecutor() {
-        return Executors.newFixedThreadPool(10);
+        return Executors.newFixedThreadPool(PRICE_REFRESH_THREAD_POOL_SIZE);
     }
 }

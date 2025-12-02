@@ -17,6 +17,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ExchangeRateService {
 
+    private static final String BASE_CURRENCY = "USD";
+    private static final int RATE_CALCULATION_SCALE = 10;
+    private static final int MONEY_DISPLAY_SCALE = 2;
+
     private final ExchangeRateApiClient exchangeRateApiClient;
 
     @Cacheable(value = "allExchangeRates", key = "'USD'")
@@ -35,7 +39,7 @@ public class ExchangeRateService {
     }
 
     public BigDecimal getRateFromUSD(String targetCurrency) {
-        if ("USD".equals(targetCurrency)) {
+        if (BASE_CURRENCY.equals(targetCurrency)) {
             return BigDecimal.ONE;
         }
 
@@ -57,7 +61,7 @@ public class ExchangeRateService {
         BigDecimal fromRate = getRateFromUSD(fromCurrency);
         BigDecimal toRate = getRateFromUSD(toCurrency);
 
-        return toRate.divide(fromRate, 10, RoundingMode.HALF_UP);
+        return toRate.divide(fromRate, RATE_CALCULATION_SCALE, RoundingMode.HALF_UP);
     }
 
     public BigDecimal convert(BigDecimal amount, String fromCurrency, String toCurrency) {
@@ -66,7 +70,7 @@ public class ExchangeRateService {
         }
 
         BigDecimal rate = getRate(fromCurrency, toCurrency);
-        return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
+        return amount.multiply(rate).setScale(MONEY_DISPLAY_SCALE, RoundingMode.HALF_UP);
     }
 
     @Scheduled(cron = "0 0 */6 * * *")
